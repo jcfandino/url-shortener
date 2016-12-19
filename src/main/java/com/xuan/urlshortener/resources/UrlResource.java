@@ -2,6 +2,7 @@ package com.xuan.urlshortener.resources;
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -21,6 +22,7 @@ import com.xuan.urlshortener.exceptions.InvalidUrl;
 import com.xuan.urlshortener.repository.ShortenedUrlRepository;
 import com.xuan.urlshortener.views.MainView;
 
+import io.dropwizard.jersey.caching.CacheControl;
 import io.dropwizard.views.View;
 
 @Path("/")
@@ -48,6 +50,7 @@ public class UrlResource {
 
     @GET
     @Path("/{key}")
+    @CacheControl(maxAge = 2, maxAgeUnit = TimeUnit.HOURS)
     public Response redirect(@PathParam("key") String key) {
         LOG.debug("Requesting URL key {}", key);
         Long id = keyEncoder.decode(key);
