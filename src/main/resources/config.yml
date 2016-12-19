@@ -1,1 +1,5 @@
 shortDomain: xuan.com.ar
+
+logging:
+    loggers:
+        "com.xuan.urlshortener" : DEBUG
