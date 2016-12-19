@@ -3,3 +3,10 @@ shortDomain: xuan.com.ar
 logging:
     loggers:
         "com.xuan.urlshortener" : DEBUG
+
+server:
+    type: simple
+    applicationContextPath: /
+    connector:
+        type: http
+        port: 8080
