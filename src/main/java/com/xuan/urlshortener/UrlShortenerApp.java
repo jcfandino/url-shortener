@@ -6,12 +6,14 @@ import com.xuan.urlshortener.repository.ShortenedUrlRepository;
 import com.xuan.urlshortener.resources.UrlResource;
 
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 
 public class UrlShortenerApp extends Application<UrlShortenerConfiguration> {
 
@@ -26,6 +28,8 @@ public class UrlShortenerApp extends Application<UrlShortenerConfiguration> {
 
     @Override
     public void initialize(Bootstrap<UrlShortenerConfiguration> bootstrap) {
+        bootstrap.addBundle(new AssetsBundle("/assets/", "/static/"));
+        bootstrap.addBundle(new ViewBundle<UrlShortenerConfiguration>());
         bootstrap.addBundle(new DBIExceptionsBundle());
         bootstrap.addBundle(new MigrationsBundle<UrlShortenerConfiguration>() {
             @Override

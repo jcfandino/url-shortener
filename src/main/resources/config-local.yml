@@ -1,4 +1,4 @@
-shortDomain: localhost
+shortDomain: "localhost:8080"
 
 logging:
     loggers:
@@ -21,6 +21,7 @@ database:
     validationQueryTimeout: 3s
     minSize: 1
     maxSize: 4
+    initialSize: 1
     checkConnectionWhileIdle: false
     evictionInterval: 10s
     minIdleTime: 1 minute

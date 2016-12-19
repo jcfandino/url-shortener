@@ -7,6 +7,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -16,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import com.xuan.urlshortener.domain.ShortenedUrl;
 import com.xuan.urlshortener.exceptions.InvalidUrl;
 import com.xuan.urlshortener.repository.ShortenedUrlRepository;
+import com.xuan.urlshortener.views.MainView;
+
+import io.dropwizard.views.View;
 
 @Path("/")
 public class UrlResource {
@@ -29,6 +34,12 @@ public class UrlResource {
     public UrlResource(String aShortDomain, ShortenedUrlRepository aUrlRepository) {
         shortDomain = aShortDomain;
         urlRepository = aUrlRepository;
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public View main() {
+        return new MainView();
     }
 
     @GET
