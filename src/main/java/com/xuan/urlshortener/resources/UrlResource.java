@@ -37,7 +37,7 @@ public class UrlResource {
         LOG.debug("Requesting URL key {}", key);
         // First implementation, only numbers are supported
         Long id = Long.parseLong(key);
-        Optional<ShortenedUrl> urlFound = urlRepository.findById(id);
+        Optional<ShortenedUrl> urlFound = Optional.ofNullable(urlRepository.findById(id));
         return urlFound
                 .map(ShortenedUrl::getLongUrl)
                     .map(URI::create)

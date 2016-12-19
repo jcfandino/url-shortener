@@ -1,0 +1,24 @@
+shortDomain: xuanurl.herokuapp.com
+
+logging:
+    loggers:
+        "com.xuan.urlshortener" : INFO
+
+server:
+    type: simple
+    applicationContextPath: /
+    connector:
+        type: http
+        port: 8080
+
+database:
+    driverClass: org.postgresql.Driver
+    url: ${JDBC_DATABASE_URL}
+    maxWaitForConnection: 1s
+    validationQuery: "/* Health Check */ SELECT 1"
+    validationQueryTimeout: 3s
+    minSize: 1
+    maxSize: 16
+    checkConnectionWhileIdle: false
+    evictionInterval: 10s
+    minIdleTime: 1 minute

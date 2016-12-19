@@ -8,8 +8,6 @@ import static org.easymock.EasyMock.verify;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import java.util.Optional;
-
 import javax.ws.rs.core.Response;
 
 import org.easymock.EasyMockRunner;
@@ -33,7 +31,7 @@ public class UrlResourceTest {
     @Test
     public void testRedirect() {
         String longUrl = "http://example.com/test";
-        expect(repository.findById(1000L)).andReturn(Optional.of(new ShortenedUrl(longUrl)));
+        expect(repository.findById(1000L)).andReturn(new ShortenedUrl(longUrl));
         replay(repository);
 
         Response response = resource.redirect("1000");
