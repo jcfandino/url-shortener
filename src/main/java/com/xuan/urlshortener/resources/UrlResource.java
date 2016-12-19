@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.xuan.urlshortener.domain.KeyEncoder;
 import com.xuan.urlshortener.domain.ShortenedUrl;
 import com.xuan.urlshortener.exceptions.InvalidUrl;
 import com.xuan.urlshortener.repository.ShortenedUrlRepository;
@@ -31,9 +32,12 @@ public class UrlResource {
 
     private final ShortenedUrlRepository urlRepository;
 
-    public UrlResource(String aShortDomain, ShortenedUrlRepository aUrlRepository) {
+    private final KeyEncoder keyEncoder;
+
+    public UrlResource(String aShortDomain, ShortenedUrlRepository aUrlRepository, KeyEncoder encoder) {
         shortDomain = aShortDomain;
         urlRepository = aUrlRepository;
+        keyEncoder = encoder;
     }
 
     @GET
@@ -46,8 +50,7 @@ public class UrlResource {
     @Path("/{key}")
     public Response redirect(@PathParam("key") String key) {
         LOG.debug("Requesting URL key {}", key);
-        // First implementation, only numbers are supported
-        Long id = Long.parseLong(key);
+        Long id = keyEncoder.decode(key);
         Optional<ShortenedUrl> urlFound = Optional.ofNullable(urlRepository.findById(id));
         return urlFound
                 .map(ShortenedUrl::getLongUrl)
@@ -61,7 +64,7 @@ public class UrlResource {
         try {
             LOG.debug("Creating new short URL for {}", longUrl);
             Long id = urlRepository.addUrl(new ShortenedUrl(longUrl));
-            String key = Long.toString(id);
+            String key = keyEncoder.encode(id);
             String shortUrl = String.format("http://%s/%s", shortDomain, key);
             return Response.created(URI.create(shortUrl)).build();
         } catch (InvalidUrl e) {

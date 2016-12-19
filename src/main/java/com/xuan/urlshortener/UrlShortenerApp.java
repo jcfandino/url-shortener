@@ -2,6 +2,7 @@ package com.xuan.urlshortener;
 
 import org.skife.jdbi.v2.DBI;
 
+import com.xuan.urlshortener.domain.KeyEncoder;
 import com.xuan.urlshortener.repository.ShortenedUrlRepository;
 import com.xuan.urlshortener.resources.UrlResource;
 
@@ -44,7 +45,7 @@ public class UrlShortenerApp extends Application<UrlShortenerConfiguration> {
         DBIFactory factory = new DBIFactory();
         DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
         ShortenedUrlRepository urlRepository = jdbi.onDemand(ShortenedUrlRepository.class);
-        UrlResource urlResource = new UrlResource(configuration.getShortDomain(), urlRepository);
+        UrlResource urlResource = new UrlResource(configuration.getShortDomain(), urlRepository, new KeyEncoder());
         environment.jersey().register(urlResource);
     }
 
